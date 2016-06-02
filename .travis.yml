@@ -1,10 +1,8 @@
 language: java
-install: /bin/true
 sudo: false
 jdk:
   - oraclejdk7
   - oraclejdk8
 script:
-  - jdk_switcher use oraclejdk7
-  - bash -c 'mvn clean install'
-  - bash -c 'mvn -Pitests install'
+  - mvn clean install
+  - mvn -Pitests install

@@ -11,6 +11,7 @@
 		<modelVersion>4.0.0</modelVersion>
 
 		<artifactId>mybatis-extender</artifactId>
+		<packaging>bundle</packaging>
 		<name>MyBatis - Mapper Extender</name>
 
 		<dependencies>
@@ -53,12 +54,8 @@
 								<artifactId>maven-surefire-plugin</artifactId>
 						</plugin>
 						<plugin>
-								<groupId>biz.aQute.bnd</groupId>
-								<artifactId>bnd-maven-plugin</artifactId>
-						</plugin>
-						<plugin>
-								<groupId>org.apache.maven.plugins</groupId>
-								<artifactId>maven-jar-plugin</artifactId>
+								<groupId>org.apache.felix</groupId>
+								<artifactId>maven-bundle-plugin</artifactId>
 						</plugin>
 				</plugins>
 		</build>

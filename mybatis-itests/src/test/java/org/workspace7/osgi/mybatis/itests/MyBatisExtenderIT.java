@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.options.MavenUrlReference;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
@@ -40,9 +41,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.CoreOptions.*;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
 
 /**
  * @author kameshs
@@ -59,14 +60,21 @@ public class MyBatisExtenderIT extends KarafTestSupport {
     @Inject
     BundleContext bundleContext;
 
+    MavenUrlReference mybatisOSGiFeaturesRepo = maven()
+            .groupId("org.workspace7.osgi.mybatis")
+            .artifactId("mybatis-osgi-features")
+            .classifier("features")
+            .type("xml")
+            .version("0.1.0");
+
+
     @org.ops4j.pax.exam.Configuration
     public Option[] config() {
         Option[] containerOpts = setupContainer();
 
         Option[] bundleOptions = options(
-                //Custom Services - e.g. mybatis-config FIXME make these as features
-                mavenBundle("org.workspace7.osgi.mybatis", "mybatis-config", "0.1.0"),
-                mavenBundle("org.workspace7.osgi.mybatis", "mybatis-extender", "0.1.0"),
+                //Application Features
+                features(mybatisOSGiFeaturesRepo, "mybatis-config", "mybatis-extender"),
                 //Mapper bundle used to test MyBatis-Extender
                 mavenBundle("org.workspace7.osgi.mybatis", "mybatis-itests-mappers", "0.1.0")
         );

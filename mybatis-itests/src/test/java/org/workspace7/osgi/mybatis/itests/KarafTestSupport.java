@@ -77,7 +77,6 @@ public class KarafTestSupport {
                 configureConsole().ignoreLocalConsole(),
                 logLevel(LogLevelOption.LogLevel.INFO),
                 keepRuntimeFolder(),
-                wrappedBundle(maven().artifactId("mybatis").groupId("org.mybatis").version("3.2.8")),
                 //Features
                 features(paxJdbcFeaturesRepo, "transaction", "jndi", "pax-jdbc-config", "pax-jdbc-h2")
         );

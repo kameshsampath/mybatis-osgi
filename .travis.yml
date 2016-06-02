@@ -3,6 +3,4 @@ sudo: false
 jdk:
   - oraclejdk7
   - oraclejdk8
-script:
-  - mvn clean install
-  - mvn -Pitests install
+script: mvn -Pservices && mvn -Pitests

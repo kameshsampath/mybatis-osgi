@@ -1,8 +1,13 @@
+# MyBatis OSGi
+
+[![Build Status](https://travis-ci.org/kameshsampath/mybatis-osgi.svg?branch=master)](https://travis-ci.org/kameshsampath/mybatis-osgi)
+
+
 # Overview
 The aim of this project is to enable working with [MyBatis](http://www.mybatis.org/mybatis-3/) in an OSGi environment.
 Currently a lot of boilerplate code is needed to get the mybatis SQLSession typically as explained [here](http://www.mybatis.org/mybatis-3/getting-started.html).
 
-The bundles `mybatis-config` and `mybatis-extender` will help in removing the boilerplate code and configures the myBatis
+The bundles [mybatis-config](./mybatis-config) and [mybatis-extender](./mybatis-extender) will help in removing the boilerplate code and configures the myBatis
 Environment and Configuration with sane defaults apart from auto linking the Configuration with Datasource.
 
 The datasource could be made available to OSGi container as a service, a pretty good approch to do that is via [PAX-JDBC](https://ops4j1.jira.com/wiki/display/PAXJDBC/Pax+JDBC).
@@ -14,7 +19,7 @@ Checkout or clone the project from [mybatis-osgi](https://github.com/kameshsampa
     `mvn clean install`
 
 
-Refer to samples folder to various samples on how to use this bundle with OSGi contianers like [Karaf](http://karaf.apache.org/) and [Camel](http://camel.apache.org/).
+Refer to [samples](./samples) for various samples on how to use this bundle with OSGi contianers like [Karaf](http://karaf.apache.org/) and [Camel](http://camel.apache.org/).
 
 ## Deploying Bundles
 
@@ -77,20 +82,9 @@ As noted above there will be one `Environment` and `Configuration` for each data
 ## Issues and Enhacements
    [Github](https://github.com/kameshsampath/mybatis-osgi/issues)
 
+## Contribution
+   Anybody wish to collbaborate please feel free to send in a PR. Your contributions are highly appreciated.
+
 ## LICENSE
 
-	Copyright 2016 Kamesh Sampath.
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-    implied.
-
-    See the License for the specific language governing permissions and
-    limitations under the License.
+[License](./LICENSE)

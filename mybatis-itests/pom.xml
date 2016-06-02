@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		<parent>
+				<artifactId>mybatis-osgi</artifactId>
+				<groupId>org.workspace7.osgi.mybatis</groupId>
+				<version>0.1.0</version>
+				<relativePath>../</relativePath>
+		</parent>
+
+		<modelVersion>4.0.0</modelVersion>
+
+		<artifactId>org.workspace7.mybatis.itests</artifactId>
+		<name>MyBatis OSGi - Integration Tests</name>
+
+		<properties>
+				<version.mybatis-config>0.1.0</version.mybatis-config>
+		</properties>
+
+		<dependencies>
+
+				<dependency>
+						<groupId>org.workspace7.mybatis</groupId>
+						<artifactId>mybatis-config</artifactId>
+						<version>${version.mybatis-config}</version>
+				</dependency>
+
+				<dependency>
+						<groupId>org.mybatis</groupId>
+						<artifactId>mybatis</artifactId>
+				</dependency>
+
+				<dependency>
+						<groupId>junit</groupId>
+						<artifactId>junit</artifactId>
+				</dependency>
+
+				<dependency>
+						<groupId>javax.inject</groupId>
+						<artifactId>javax.inject</artifactId>
+				</dependency>
+
+				<dependency>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-log4j12</artifactId>
+				</dependency>
+
+				<dependency>
+						<groupId>org.ops4j.pax.exam</groupId>
+						<artifactId>pax-exam-link-mvn</artifactId>
+				</dependency>
+
+				<!-- Features that will be deployed -->
+
+				<dependency>
+						<groupId>org.ops4j.pax.jdbc</groupId>
+						<artifactId>pax-jdbc-features</artifactId>
+						<version>${version.pax-jdbc}</version>
+						<classifier>features</classifier>
+						<type>xml</type>
+				</dependency>
+
+				<!-- Other Test dependencies -->
+
+				<dependency>
+						<groupId>org.osgi</groupId>
+						<artifactId>org.osgi.core</artifactId>
+				</dependency>
+
+				<dependency>
+						<groupId>com.h2database</groupId>
+						<artifactId>h2</artifactId>
+						<version>1.4.192</version>
+						<scope>provided</scope>
+				</dependency>
+
+				<dependency>
+						<groupId>junit</groupId>
+						<artifactId>junit</artifactId>
+				</dependency>
+
+				<dependency>
+						<groupId>org.ops4j.pax.exam</groupId>
+						<artifactId>pax-exam-container-karaf</artifactId>
+				</dependency>
+
+				<dependency>
+						<groupId>org.ops4j.pax.exam</groupId>
+						<artifactId>pax-exam-junit4</artifactId>
+				</dependency>
+
+				<dependency>
+						<groupId>org.ops4j.pax.url</groupId>
+						<artifactId>pax-url-aether</artifactId>
+				</dependency>
+
+		</dependencies>
+
+		<build>
+
+				<plugins>
+						<plugin>
+								<groupId>org.apache.maven.plugins</groupId>
+								<artifactId>maven-compiler-plugin</artifactId>
+						</plugin>
+						<plugin>
+								<groupId>org.apache.maven.plugins</groupId>
+								<artifactId>maven-surefire-plugin</artifactId>
+						</plugin>
+						<plugin>
+								<groupId>org.apache.maven.plugins</groupId>
+								<artifactId>maven-failsafe-plugin</artifactId>
+						</plugin>
+						<plugin>
+								<groupId>org.apache.servicemix.tooling</groupId>
+								<artifactId>depends-maven-plugin</artifactId>
+						</plugin>
+						<plugin>
+								<groupId>biz.aQute.bnd</groupId>
+								<artifactId>bnd-maven-plugin</artifactId>
+						</plugin>
+						<plugin>
+								<groupId>org.apache.maven.plugins</groupId>
+								<artifactId>maven-jar-plugin</artifactId>
+						</plugin>
+				</plugins>
+		</build>
+
+</project>

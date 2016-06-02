@@ -1,0 +1,14 @@
+Bundle-Version>: 0.1.0.${tstamp}
+
+Bundle-SymbolicName:\
+  org.workspace7.mybatis.itests.mappers
+
+-exportcontents: \
+    org.workspace7.mybatis.itests.mappers
+
+MyBatis-Mappers: \
+    demodbDS=org.workspace7.mybatis.demo.mappers,\
+    persondbDS=org.workspace7.mybatis.person.mappers
+
+Import-Package:\
+  *

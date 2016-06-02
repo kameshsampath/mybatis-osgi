@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		<modelVersion>4.0.0</modelVersion>
+
+		<groupId>org.workspace7.osgi.mybatis</groupId>
+		<artifactId>mybatis-osgi</artifactId>
+		<name>MyBatis OSGi</name>
+		<version>0.1.0</version>
+
+		<packaging>pom</packaging>
+
+		<scm>
+				<connection>scm:git:git@github.com:kameshsampath/mybatis-osgi.git</connection>
+				<developerConnection>scm:git:git@github.com:kameshsampath/mybatis-osgi.git</developerConnection>
+				<url>git@github.com:kameshsampath/mybatis-osgi.git</url>
+				<tag>HEAD</tag>
+		</scm>
+
+
+		<properties>
+				<version.mybatis>3.2.8</version.mybatis>
+				<version.osgi.core>5.0.0</version.osgi.core>
+				<version.osgi.enterprise>5.0.0</version.osgi.enterprise>
+				<version.java.source>1.7</version.java.source>
+				<version.java.target>1.7</version.java.target>
+				<version.slf4j>1.7.7</version.slf4j>
+				<version.felix>4.4.1</version.felix>
+				<version.pax-jdbc>0.8.0</version.pax-jdbc>
+
+				<version.junit>4.12</version.junit>
+				<version.pax-exam>3.6.0</version.pax-exam>
+				<version.pax-url>2.0.0</version.pax-url>
+		</properties>
+
+
+		<dependencyManagement>
+				<dependencies>
+						<dependency>
+								<groupId>org.mybatis</groupId>
+								<artifactId>mybatis</artifactId>
+								<version>${version.mybatis}</version>
+						</dependency>
+						<dependency>
+								<groupId>org.osgi</groupId>
+								<artifactId>org.osgi.core</artifactId>
+								<version>${version.osgi.core}</version>
+						</dependency>
+						<dependency>
+								<groupId>org.osgi</groupId>
+								<artifactId>org.osgi.enterprise</artifactId>
+								<version>${version.osgi.enterprise}</version>
+						</dependency>
+
+						<dependency>
+								<groupId>org.slf4j</groupId>
+								<artifactId>slf4j-api</artifactId>
+								<version>${version.slf4j}</version>
+						</dependency>
+
+						<dependency>
+								<groupId>org.slf4j</groupId>
+								<artifactId>slf4j-log4j12</artifactId>
+								<version>${version.slf4j}</version>
+								<scope>test</scope>
+						</dependency>
+
+						<!-- OSGi Framework -->
+						<dependency>
+								<groupId>org.apache.felix</groupId>
+								<artifactId>org.apache.felix.framework</artifactId>
+								<version>${version.felix}</version>
+								<scope>test</scope>
+						</dependency>
+
+						<dependency>
+								<groupId>junit</groupId>
+								<artifactId>junit</artifactId>
+								<version>${version.junit}</version>
+						</dependency>
+
+						<!-- PAX-EXAM Dependencies -->
+
+						<dependency>
+								<groupId>javax.inject</groupId>
+								<artifactId>javax.inject</artifactId>
+								<version>1</version>
+								<scope>test</scope>
+						</dependency>
+
+						<dependency>
+								<groupId>org.ops4j.pax.exam</groupId>
+								<artifactId>pax-exam-junit4</artifactId>
+								<version>${version.pax-exam}</version>
+								<scope>test</scope>
+						</dependency>
+
+						<dependency>
+								<groupId>org.ops4j.pax.exam</groupId>
+								<artifactId>pax-exam-link-mvn</artifactId>
+								<version>${version.pax-exam}</version>
+								<scope>test</scope>
+						</dependency>
+
+						<dependency>
+								<groupId>org.ops4j.pax.url</groupId>
+								<artifactId>pax-url-aether</artifactId>
+								<version>${version.pax-url}</version>
+								<scope>test</scope>
+						</dependency>
+						<dependency>
+								<groupId>org.ops4j.pax.exam</groupId>
+								<artifactId>pax-exam-container-karaf</artifactId>
+								<version>${version.pax-exam}</version>
+								<scope>test</scope>
+						</dependency>
+
+				</dependencies>
+		</dependencyManagement>
+
+		<build>
+				<plugins>
+						<plugin>
+								<groupId>org.apache.maven.plugins</groupId>
+								<artifactId>maven-compiler-plugin</artifactId>
+								<version>3.5.1</version>
+								<configuration>
+										<source>1.7</source>
+										<target>1.7</target>
+								</configuration>
+						</plugin>
+						<plugin>
+								<groupId>org.apache.maven.plugins</groupId>
+								<artifactId>maven-surefire-plugin</artifactId>
+								<version>2.19.1</version>
+								<configuration>
+										<excludes>
+												<exclude>**/*IT.java</exclude>
+										</excludes>
+								</configuration>
+						</plugin>
+						<plugin>
+								<groupId>org.apache.maven.plugins</groupId>
+								<artifactId>maven-failsafe-plugin</artifactId>
+								<version>2.19.1</version>
+								<executions>
+										<execution>
+												<goals>
+														<goal>integration-test</goal>
+														<goal>verify</goal>
+												</goals>
+										</execution>
+								</executions>
+								<configuration>
+										<parallel>none</parallel>
+										<excludes>
+												<exclude>**/*Test.java</exclude>
+										</excludes>
+								</configuration>
+						</plugin>
+						<plugin>
+								<groupId>org.apache.servicemix.tooling</groupId>
+								<artifactId>depends-maven-plugin</artifactId>
+								<version>1.2</version>
+								<executions>
+										<execution>
+												<id>generate-depends-file</id>
+												<goals>
+														<goal>generate-depends-file</goal>
+												</goals>
+										</execution>
+								</executions>
+						</plugin>
+						<plugin>
+								<groupId>biz.aQute.bnd</groupId>
+								<artifactId>bnd-maven-plugin</artifactId>
+								<version>3.2.0</version>
+								<executions>
+										<execution>
+												<id>default-bnd-process</id>
+												<goals>
+														<goal>bnd-process</goal>
+												</goals>
+										</execution>
+								</executions>
+						</plugin>
+						<plugin>
+								<groupId>org.apache.maven.plugins</groupId>
+								<artifactId>maven-jar-plugin</artifactId>
+								<version>2.6</version>
+								<configuration>
+										<useDefaultManifestFile>true</useDefaultManifestFile>
+										<archive>
+												<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.mf</manifestFile>
+										</archive>
+								</configuration>
+						</plugin>
+				</plugins>
+		</build>
+
+		<profiles>
+				<profile>
+						<id>services</id>
+						<activation>
+								<activeByDefault>true</activeByDefault>
+						</activation>
+						<modules>
+								<module>mybatis-config</module>
+								<module>mybatis-extender</module>
+								<module>mybatis-itests-mappers</module>
+						</modules>
+						<build>
+								<defaultGoal>clean install</defaultGoal>
+						</build>
+				</profile>
+				<profile>
+						<id>itests</id>
+						<modules>
+								<module>mybatis-itests</module>
+						</modules>
+						<build>
+								<defaultGoal>clean verify</defaultGoal>
+						</build>
+				</profile>
+		</profiles>
+
+		<licenses>
+				<license>
+						<name>Apache License, Version 2.0</name>
+						<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+						<comments>
+								Copyright 2016 Kamesh Sampath.
+
+								Licensed under the Apache License, Version 2.0 (the "License");
+								you may not use this file except in compliance with the License.
+								You may obtain a copy of the License at
+
+								http://www.apache.org/licenses/LICENSE-2.0
+
+								Unless required by applicable law or agreed to in writing, software
+								distributed under the License is distributed on an "AS IS" BASIS,
+								WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+								implied.
+
+								See the License for the specific language governing permissions and
+								limitations under the License.
+						</comments>
+				</license>
+		</licenses>
+
+		<url>https://github.com/kameshsampath/mybatis-osgi/wiki</url>
+		<inceptionYear>2016</inceptionYear>
+
+		<issueManagement>
+				<system>github</system>
+				<url>https://github.com/kameshsampath/mybatis-osgi/issues</url>
+		</issueManagement>
+
+		<developers>
+				<developer>
+						<id>kameshsampath</id>
+						<name>Kamesh Sampath</name>
+						<email>kamesh.sampath@hotmail.com</email>
+						<roles>
+								<role>Developer</role>
+						</roles>
+						<timezone>UTC+05:30</timezone>
+				</developer>
+		</developers>
+
+		<repositories>
+				<repository>
+						<id>redhat-ga</id>
+						<name>RedHat GA Release Repository</name>
+						<url>http://maven.repository.redhat.com/ga/</url>
+						<snapshots>
+								<enabled>false</enabled>
+						</snapshots>
+						<releases>
+								<enabled>true</enabled>
+								<updatePolicy>never</updatePolicy>
+						</releases>
+				</repository>
+				<repository>
+						<id>fuse-public-repository</id>
+						<name>FuseSource Community Release Repository</name>
+						<url>https://repo.fusesource.com/nexus/content/groups/public</url>
+						<snapshots>
+								<enabled>false</enabled>
+						</snapshots>
+						<releases>
+								<enabled>true</enabled>
+								<updatePolicy>never</updatePolicy>
+						</releases>
+				</repository>
+		</repositories>
+
+		<pluginRepositories>
+				<pluginRepository>
+						<id>redhat-ga</id>
+						<name>RedHat GA Release Repository</name>
+						<url>http://maven.repository.redhat.com/ga/</url>
+						<snapshots>
+								<enabled>false</enabled>
+						</snapshots>
+						<releases>
+								<enabled>true</enabled>
+								<updatePolicy>never</updatePolicy>
+						</releases>
+				</pluginRepository>
+				<pluginRepository>
+						<id>fuse-public-repository</id>
+						<name>FuseSource Community Release Repository</name>
+						<url>https://repo.fusesource.com/nexus/content/groups/public</url>
+						<snapshots>
+								<enabled>false</enabled>
+						</snapshots>
+						<releases>
+								<enabled>true</enabled>
+								<updatePolicy>never</updatePolicy>
+						</releases>
+				</pluginRepository>
+		</pluginRepositories>
+
+</project>

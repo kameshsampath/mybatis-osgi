@@ -21,10 +21,14 @@
 package org.workspace7.osgi.mybatis.extender.impl;
 
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
+import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.jdbc.DataSourceFactory;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
@@ -48,31 +52,32 @@ public class MyBatisMapperRegistry {
 
     private Set<Bundle> activeBundles = new HashSet();
 
-    private Hashtable<String, Configuration> registeredConfigurations = new Hashtable<>();
-    private ServiceTracker configurationServiceTracker;
+    private Hashtable<String, Environment> registeredEnvironments = new Hashtable<>();
+    private Hashtable<String, ServiceRegistration> registeredSqlSessionFactories = new Hashtable<>();
+    private ServiceTracker environmentServiceTracker;
 
     public MyBatisMapperRegistry(final BundleContext bundleContext) {
 
         this.bundleContext = bundleContext;
 
-        //Open Service Tracker to grab the registered mybatis configurations
+        //Open Service Tracker to grab the registered mybatis environments
 
-        configurationServiceTracker = new ServiceTracker(bundleContext, Configuration.class.getName(), new ServiceTrackerCustomizer() {
+        environmentServiceTracker = new ServiceTracker(bundleContext, Environment.class.getName(), new ServiceTrackerCustomizer() {
             @Override
             public Object addingService(ServiceReference serviceReference) {
 
                 String configName = (String) serviceReference
                         .getProperty(DataSourceFactory.JDBC_DATASOURCE_NAME);
 
-                Configuration myBatisConfiguration = (Configuration) bundleContext.getService(serviceReference);
+                Environment myBatisEnv = (Environment) bundleContext.getService(serviceReference);
 
-                if (!registeredConfigurations.containsKey(configName)) {
-                    registeredConfigurations.put(configName, myBatisConfiguration);
+                if (!registeredEnvironments.containsKey(configName)) {
+                    registeredEnvironments.put(configName, myBatisEnv);
                 }
 
-                logger.info("Adding Configuration {} to local cache ", configName);
+                logger.info("Adding Environment {} to local cache ", configName);
 
-                return myBatisConfiguration;
+                return myBatisEnv;
             }
 
             @Override
@@ -86,14 +91,14 @@ public class MyBatisMapperRegistry {
                 String configName = (String) serviceReference
                         .getProperty(DataSourceFactory.JDBC_DATASOURCE_NAME);
 
-                if (registeredConfigurations.containsKey(configName)) {
-                    registeredConfigurations.remove(configName);
+                if (registeredEnvironments.containsKey(configName)) {
+                    registeredEnvironments.remove(configName);
                     logger.info("Removed Configuration {} from local cache ", configName);
                 }
             }
         });
 
-        configurationServiceTracker.open();
+        environmentServiceTracker.open();
     }
 
     public void registerBundle(Bundle bundle) {
@@ -102,7 +107,10 @@ public class MyBatisMapperRegistry {
 
         for (String dsName : dsMappers.keySet()) {
 
-            Configuration configuration = registeredConfigurations.get(dsName);
+            Environment environment = registeredEnvironments.get(dsName);
+
+            Configuration configuration = new Configuration(environment);
+
             if (configuration != null) {
 
                 List<String> packageNames = dsMappers.get(dsName);
@@ -137,6 +145,21 @@ public class MyBatisMapperRegistry {
 
                                 in.close();
 
+                                Collection<String> mappedStatements = configuration.getMappedStatementNames();
+                                for (String mappedStmt : mappedStatements) {
+                                    logger.info(" Added Mapped Statement: {}", mappedStmt);
+                                }
+
+                                unregisterSqlSessionFactory(dsName);
+
+                                SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+                                Dictionary<String, String> props = new Hashtable<>();
+                                props.put("dataSourceName", dsName);
+                                ServiceRegistration serviceRegistration = bundleContext.
+                                        registerService(SqlSessionFactory.class.getName(), sqlSessionFactory, props);
+
+                                registeredSqlSessionFactories.put(dsName, serviceRegistration);
+
                             } catch (IOException e) {
                                 logger.error("Unable to add mapper {} ", mapperxmlUrl.toString(), e);
 
@@ -153,9 +176,10 @@ public class MyBatisMapperRegistry {
 
     }
 
+
     public void unregisterBundle(Bundle bundle) {
 
-        logger.info("Unregistering Mapper Bundle {} ", bundle.getSymbolicName());
+        logger.info("UnRegistering Mapper Bundle {} ", bundle.getSymbolicName());
 
         activeBundles.remove(bundle);
 
@@ -163,23 +187,24 @@ public class MyBatisMapperRegistry {
 
         for (String dsName : dsMappers.keySet()) {
 
-            Configuration configuration = registeredConfigurations.get(dsName);
-
-            if (configuration != null) {
-                List<String> packageNames = dsMappers.get(dsName);
-                for (String packageName : packageNames) {
-                    logger.info("Removing mapped package {} from Configuration {}", packageName, dsName);
-                    //FIXME how to remove the registered mappers
-                }
-            }
+            unregisterSqlSessionFactory(dsName);
         }
 
 
     }
 
     public void close() {
-        if (configurationServiceTracker != null) {
-            configurationServiceTracker.close();
+        if (environmentServiceTracker != null) {
+            environmentServiceTracker.close();
+        }
+    }
+
+    private void unregisterSqlSessionFactory(String dsName) {
+        if (registeredSqlSessionFactories.containsKey(dsName)) {
+            logger.info("Unregistering SqlSession Factory {}:", dsName);
+            ServiceRegistration serviceRegistration = registeredSqlSessionFactories.get(dsName);
+            serviceRegistration.unregister();
+            registeredSqlSessionFactories.remove(dsName);
         }
     }
 

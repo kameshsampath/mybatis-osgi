@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<features name="mybatis-camel-demo-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
+
+		<feature name="mybatis-camel-demo-mappers" description="Provides mybatis mapping files"
+		         version="${project.version}"
+		         resolver="(obr)">
+				<feature>mybatis-camel-demo-mappers</feature>
+				<bundle>mvn:org.workspace7.osgi.mybatis.samples/mybatis-camel-demo-mappers/${project.version}</bundle>
+		</feature>
+
+		<feature name="mybatis-camel-demo-app"
+		         description="Provides Camel application using the paxjdbc mybatis demo bundles"
+		         version="${project.version}"
+		         resolver="(obr)">
+				<feature>mybatis-camel-demo-app</feature>
+				<bundle>mvn:org.workspace7.osgi.mybatis.samples/mybatis-camel-demo-app/${project.version}</bundle>
+		</feature>
+
+</features>

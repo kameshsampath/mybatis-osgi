@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		<parent>
+				<artifactId>samples</artifactId>
+				<groupId>org.workspace7.osgi.mybatis.samples</groupId>
+				<version>0.1.0</version>
+				<relativePath>../</relativePath>
+		</parent>
+
+		<modelVersion>4.0.0</modelVersion>
+		<packaging>pom</packaging>
+		<artifactId>mybatis-camel-demo-features</artifactId>
+		<name>MyBatis OSGi - Camel Demo Features</name>
+
+		<description>
+				A module creating a features xml file to deploy Pax Jdbc Camel mybatis demo components as features in Apache
+				Karaf.
+				To use this feature enter the following in your Karaf shell -
+				feature:repo-add
+				mvn:org.workspace7.osgi.mybatis.samples/mybatis-camel-demo-features/${project.version}/xml/features
+		</description>
+
+		<build>
+				<resources>
+						<resource>
+								<directory>src/main/resources</directory>
+								<filtering>true</filtering>
+						</resource>
+				</resources>
+				<plugins>
+						<plugin>
+								<groupId>org.apache.maven.plugins</groupId>
+								<artifactId>maven-dependency-plugin</artifactId>
+								<version>2.10</version>
+								<executions>
+										<execution>
+												<id>copy</id>
+												<phase>generate-resources</phase>
+												<goals>
+														<goal>copy-dependencies</goal>
+												</goals>
+										</execution>
+								</executions>
+						</plugin>
+						<plugin>
+								<groupId>org.apache.maven.plugins</groupId>
+								<artifactId>maven-resources-plugin</artifactId>
+								<executions>
+										<execution>
+												<id>filter</id>
+												<phase>generate-resources</phase>
+												<goals>
+														<goal>resources</goal>
+												</goals>
+										</execution>
+								</executions>
+						</plugin>
+						<plugin>
+								<groupId>org.codehaus.mojo</groupId>
+								<artifactId>build-helper-maven-plugin</artifactId>
+								<executions>
+										<execution>
+												<id>attach-artifacts</id>
+												<phase>package</phase>
+												<goals>
+														<goal>attach-artifact</goal>
+												</goals>
+												<configuration>
+														<artifacts>
+																<artifact>
+																		<file>target/classes/features.xml</file>
+																		<type>xml</type>
+																		<classifier>features</classifier>
+																</artifact>
+														</artifacts>
+												</configuration>
+										</execution>
+								</executions>
+						</plugin>
+				</plugins>
+		</build>
+
+</project>

@@ -36,7 +36,7 @@ public class DataSourceServiceTracker extends ServiceTracker {
     private final TransactionFactory transactionFactory;
 
 
-    private Hashtable<String, MyBatisEnvAndConfigRegistration> mybatisEnvConfigSvcRegs = new Hashtable<>();
+    private Hashtable<String, MyBatisEnvRegistration> mybatisEnvConfigSvcRegs = new Hashtable<>();
 
     public DataSourceServiceTracker(BundleContext context, Filter filter, TransactionFactory transactionFactory) {
         super(context, filter, null);
@@ -48,15 +48,15 @@ public class DataSourceServiceTracker extends ServiceTracker {
 
         String dataSourceName = (String) reference.getProperty("dataSourceName");
 
-        MyBatisEnvAndConfigRegistration myBatisEnvAndConfigRegistration = null;
+        MyBatisEnvRegistration myBatisEnvRegistration = null;
 
         if (!mybatisEnvConfigSvcRegs.containsKey(dataSourceName)) {
-            myBatisEnvAndConfigRegistration =
-                    new MyBatisEnvAndConfigRegistration(context, transactionFactory, reference);
-            mybatisEnvConfigSvcRegs.put(dataSourceName, myBatisEnvAndConfigRegistration);
+            myBatisEnvRegistration =
+                    new MyBatisEnvRegistration(context, transactionFactory, reference);
+            mybatisEnvConfigSvcRegs.put(dataSourceName, myBatisEnvRegistration);
         }
 
-        return myBatisEnvAndConfigRegistration;
+        return myBatisEnvRegistration;
     }
 
     @Override
@@ -69,11 +69,11 @@ public class DataSourceServiceTracker extends ServiceTracker {
     public void removedService(ServiceReference reference, Object service) {
         String dataSourceName = (String) reference.getProperty("dataSourceName");
 
-        MyBatisEnvAndConfigRegistration myBatisEnvAndConfigRegistration = (MyBatisEnvAndConfigRegistration) service;
+        MyBatisEnvRegistration myBatisEnvRegistration = (MyBatisEnvRegistration) service;
         if (mybatisEnvConfigSvcRegs.containsKey(dataSourceName)) {
-            mybatisEnvConfigSvcRegs.put(dataSourceName, myBatisEnvAndConfigRegistration);
+            mybatisEnvConfigSvcRegs.put(dataSourceName, myBatisEnvRegistration);
         }
 
-        myBatisEnvAndConfigRegistration.close();
+        myBatisEnvRegistration.close();
     }
 }

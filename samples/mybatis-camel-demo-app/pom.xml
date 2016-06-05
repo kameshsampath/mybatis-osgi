@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		<parent>
+				<artifactId>samples</artifactId>
+				<groupId>org.workspace7.osgi.mybatis.samples</groupId>
+				<version>0.1.0</version>
+				<relativePath>../</relativePath>
+		</parent>
+
+		<modelVersion>4.0.0</modelVersion>
+
+		<artifactId>mybatis-camel-demo-app</artifactId>
+		<name>MyBatis OSGi - Camel Demo Application</name>
+		<packaging>bundle</packaging>
+		<description>The project that use mybatis in Camel Routes using camel-mybatis components</description>
+
+		<dependencies>
+
+				<dependency>
+						<groupId>org.apache.camel</groupId>
+						<artifactId>camel-core</artifactId>
+				</dependency>
+
+				<dependency>
+						<groupId>org.apache.camel</groupId>
+						<artifactId>camel-blueprint</artifactId>
+				</dependency>
+
+				<dependency>
+						<groupId>org.apache.camel</groupId>
+						<artifactId>camel-netty4-http</artifactId>
+				</dependency>
+
+				<!-- JSON -->
+				<dependency>
+						<groupId>org.apache.camel</groupId>
+						<artifactId>camel-gson</artifactId>
+				</dependency>
+
+				<dependency>
+						<groupId>org.apache.camel</groupId>
+						<artifactId>camel-mybatis</artifactId>
+				</dependency>
+
+				<!-- MyBatis-OSGi -->
+				<dependency>
+						<groupId>org.workspace7.osgi.mybatis</groupId>
+						<artifactId>mybatis-config</artifactId>
+						<version>${version.mybatis-config}</version>
+				</dependency>
+
+				<dependency>
+						<groupId>org.workspace7.osgi.mybatis</groupId>
+						<artifactId>mybatis-extender</artifactId>
+						<version>${version.mybatis-config}</version>
+				</dependency>
+
+				<dependency>
+						<groupId>org.workspace7.osgi.mybatis.samples</groupId>
+						<artifactId>mybatis-camel-demo-mappers</artifactId>
+						<version>${version.mybatis-config}</version>
+				</dependency>
+
+				<!-- OSGI -->
+				<dependency>
+						<groupId>org.osgi</groupId>
+						<artifactId>org.osgi.core</artifactId>
+				</dependency>
+
+				<dependency>
+						<groupId>org.osgi</groupId>
+						<artifactId>org.osgi.compendium</artifactId>
+				</dependency>
+
+				<!-- Logging -->
+				<dependency>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+				</dependency>
+				<dependency>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-log4j12</artifactId>
+				</dependency>
+
+		</dependencies>
+
+		<build>
+				<plugins>
+						<plugin>
+								<groupId>org.apache.maven.plugins</groupId>
+								<artifactId>maven-compiler-plugin</artifactId>
+						</plugin>
+						<plugin>
+								<groupId>org.apache.maven.plugins</groupId>
+								<artifactId>maven-surefire-plugin</artifactId>
+						</plugin>
+						<plugin>
+								<groupId>org.apache.felix</groupId>
+								<artifactId>maven-bundle-plugin</artifactId>
+						</plugin>
+				</plugins>
+		</build>
+
+</project>

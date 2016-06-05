@@ -21,7 +21,6 @@
 package org.workspace7.mybatis.config.impl;
 
 import org.apache.ibatis.mapping.Environment;
-import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -38,16 +37,15 @@ import java.util.Hashtable;
 /**
  * @author kameshs
  */
-public class MyBatisEnvAndConfigRegistration implements Closeable {
+public class MyBatisEnvRegistration implements Closeable {
 
-    private static final Logger logger = LoggerFactory.getLogger(MyBatisEnvAndConfigRegistration.class);
+    private static final Logger logger = LoggerFactory.getLogger(MyBatisEnvRegistration.class);
 
     private ServiceRegistration envServiceReg;
-    private ServiceRegistration configServiceReg;
 
 
-    public MyBatisEnvAndConfigRegistration(BundleContext bundleContext,
-                                           TransactionFactory transactionFactory, ServiceReference dsReference) {
+    public MyBatisEnvRegistration(BundleContext bundleContext,
+                                  TransactionFactory transactionFactory, ServiceReference dsReference) {
 
         if (dsReference != null) {
 
@@ -63,11 +61,7 @@ public class MyBatisEnvAndConfigRegistration implements Closeable {
             envServiceReg = bundleContext.registerService(Environment.class.getName(),
                     myBatisEnv, serviceProps);
 
-
-            configServiceReg = bundleContext.registerService(Configuration.class.getName(),
-                    new Configuration(myBatisEnv), serviceProps);
-
-            logger.info("Created and registered Env and Config for Datasource {}", dataSourceName);
+            logger.info("Created and registered MyBatis Environment for Datasource {}", dataSourceName);
 
 
         }
@@ -78,10 +72,6 @@ public class MyBatisEnvAndConfigRegistration implements Closeable {
 
         if (envServiceReg != null) {
             envServiceReg.unregister();
-        }
-
-        if (configServiceReg != null) {
-            configServiceReg.unregister();
         }
     }
 }

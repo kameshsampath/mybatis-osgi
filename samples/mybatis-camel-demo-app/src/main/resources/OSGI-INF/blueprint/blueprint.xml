@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+
+		<!-- Get the MyBatis Configuration -->
+		<!-- ext:proxy-method  is requuired as MyBatisConfiguration is class, by default bluprint proxies only interfaces-->
+		<!-- reference xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
+		           id="configuration" interface="org.apache.ibatis.session.Configuration"
+		           filter="(dataSourceName=demodbDS)" ext:proxy-method="classes"/ -->
+
+		<reference
+						id="_sqlSessionFactory" interface="org.apache.ibatis.session.SqlSessionFactory"
+						filter="(dataSourceName=demodbDS)"/>
+
+		<bean id="mybatis" class="org.apache.camel.component.mybatis.MyBatisComponent">
+				<property name="sqlSessionFactory" ref="_sqlSessionFactory"/>
+		</bean>
+
+		<camelContext id="paxjdbc-demo-ctx" xmlns="http://camel.apache.org/schema/blueprint">
+
+				<dataFormats>
+						<json id="gson" library="Gson" unmarshalTypeName="org.workspace7.osgi.mybatis.demo.mappers.Person"/>
+				</dataFormats>
+
+				<route id="selectPersons">
+						<from uri="netty4-http:http://0.0.0.0:8181/mybatis/persons"/>
+						<to uri="mybatis:selectAllPersons?statementType=SelectList"/>
+						<marshal ref="gson"/>
+				</route>
+
+				<route id="selectPersonById">
+						<from uri="netty4-http:http://0.0.0.0:8181/mybatis/person"/>
+						<setBody>
+								<constant>1001</constant>
+						</setBody>
+						<to uri="mybatis:personById?statementType=SelectOne"/>
+						<marshal ref="gson"/>
+				</route>
+
+		</camelContext>
+
+</blueprint>

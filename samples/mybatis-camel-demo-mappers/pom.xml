@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+		<parent>
+				<artifactId>samples</artifactId>
+				<groupId>org.workspace7.osgi.mybatis.samples</groupId>
+				<version>0.1.0</version>
+				<relativePath>../</relativePath>
+		</parent>
+
+		<modelVersion>4.0.0</modelVersion>
+
+		<artifactId>mybatis-camel-demo-mappers</artifactId>
+		<name>MyBatis OSGi - Camel Demo Mybatis Mappers</name>
+		<packaging>bundle</packaging>
+
+		<description>The project that will host all the mappers of mybatis</description>
+
+		<dependencies>
+
+				<dependency>
+						<groupId>org.osgi</groupId>
+						<artifactId>org.osgi.core</artifactId>
+				</dependency>
+
+				<dependency>
+						<groupId>org.mybatis</groupId>
+						<artifactId>mybatis</artifactId>
+						<version>${version.mybatis}</version>
+				</dependency>
+
+				<!-- Logging -->
+				<dependency>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+				</dependency>
+
+				<dependency>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-log4j12</artifactId>
+				</dependency>
+
+
+		</dependencies>
+
+		<build>
+				<plugins>
+						<plugin>
+								<groupId>org.apache.maven.plugins</groupId>
+								<artifactId>maven-compiler-plugin</artifactId>
+						</plugin>
+						<plugin>
+								<groupId>org.apache.maven.plugins</groupId>
+								<artifactId>maven-surefire-plugin</artifactId>
+						</plugin>
+						<plugin>
+								<groupId>org.apache.felix</groupId>
+								<artifactId>maven-bundle-plugin</artifactId>
+						</plugin>
+				</plugins>
+		</build>
+
+</project>

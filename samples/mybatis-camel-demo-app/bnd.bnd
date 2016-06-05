@@ -1,0 +1,13 @@
+Bundle-Version: 0.1.0.${tstamp}
+Bundle-Name: MyBatis OSGi - Camel Demo Application
+
+Import-Package: \
+	javax.sql,\
+    org.workspace7.osgi.mybatis.demo.mappers,\
+	org.apache.camel.component.mybatis,\
+	org.apache.ibatis.transaction.jdbc,\
+	org.apache.ibatis.mapping,\
+	org.apache.ibatis.session,\
+	*
+
+-dsannotations: *

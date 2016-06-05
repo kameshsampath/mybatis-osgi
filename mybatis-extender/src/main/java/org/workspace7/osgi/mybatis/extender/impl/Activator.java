@@ -32,9 +32,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Activator implements BundleActivator {
 
-    private static final Logger logger = LoggerFactory.getLogger(Activator.class);
-
-    private BundleContext bundleContext;
+    private static final String FACTORY_PID = "org.workspace7.mybatis";
 
     private BundleTracker mapperBundleTracker;
 
@@ -42,7 +40,6 @@ public class Activator implements BundleActivator {
 
     @Override
     public void start(BundleContext bundleContext) throws Exception {
-        this.bundleContext = bundleContext;
 
         myBatisMapperRegistry = new MyBatisMapperRegistry(bundleContext);
 
@@ -57,6 +54,5 @@ public class Activator implements BundleActivator {
         myBatisMapperRegistry.close();
         mapperBundleTracker.close();
     }
-
 
 }

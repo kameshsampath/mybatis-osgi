@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~
+  ~    Copyright (c) 2016. Kamesh Sampath.
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+  ~    implied.
+  ~
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  ~
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		<parent>
+				<artifactId>mybatis-osgi</artifactId>
+				<groupId>org.workspace7.osgi.mybatis</groupId>
+				<version>0.1.0</version>
+				<relativePath>../</relativePath>
+		</parent>
+		<modelVersion>4.0.0</modelVersion>
+
+		<groupId>org.workspace7.osgi.mybatis.samples</groupId>
+		<artifactId>samples</artifactId>
+		<name>MyBatis OSGi - Camel Sample</name>
+		<packaging>pom</packaging>
+
+		<properties>
+				<version.jboss.fuse.bom>6.2.1.redhat-084</version.jboss.fuse.bom>
+				<version.mybatis-config>0.1.0</version.mybatis-config>
+				<!-- Fabric8 configurations -->
+				<fabric8.serverId>fabric8.localhost</fabric8.serverId>
+				<fabric8.jolokiaUrl>http://localhost:8181/jolokia</fabric8.jolokiaUrl>
+				<fabric8.parentProfiles>jboss-fuse-minimal</fabric8.parentProfiles>
+				<fabric8.profile>mybatis-osgi-samples</fabric8.profile>
+				<fabric8.featureRepos>mvn:org.ops4j.pax.jdbc/pax-jdbc-features/${version.pax-jdbc}/xml/features
+						mvn:org.workspace7.osgi.mybatis/mybatis-osgi-features/${version.mybatis-config}/xml/features
+						mvn:org.workspace7.osgi.mybatis.samples/mybatis-camel-demo-features/${version.mybatis-config}/xml/features
+				</fabric8.featureRepos>
+				<fabric8.features>camel-blueprint camel-mybatis transaction jndi pax-jdbc-config pax-jdbc-mariadb mybatis-config
+						mybatis-extender mybatis-camel-demo-mappers mybatis-camel-demo-app
+				</fabric8.features>
+		</properties>
+
+
+		<dependencyManagement>
+				<dependencies>
+
+						<!-- just to ensure that we fetch the right versions of Red Hat GA jars -->
+						<dependency>
+								<groupId>org.jboss.fuse.bom</groupId>
+								<artifactId>jboss-fuse-parent</artifactId>
+								<version>${version.jboss.fuse.bom}</version>
+								<type>pom</type>
+								<scope>import</scope>
+						</dependency>
+
+						<dependency>
+								<groupId>org.workspace7.osgi.mybatis</groupId>
+								<artifactId>mybatis-config</artifactId>
+								<version>${version.mybatis-config}</version>
+						</dependency>
+
+						<dependency>
+								<groupId>org.workspace7.osgi.mybatis</groupId>
+								<artifactId>mybatis-extender</artifactId>
+								<version>${version.mybatis-config}</version>
+						</dependency>
+				</dependencies>
+		</dependencyManagement>
+
+		<modules>
+				<module>mybatis-camel-demo-mappers</module>
+				<module>mybatis-camel-demo-app</module>
+				<module>mybatis-camel-demo-features</module>
+		</modules>
+
+		<build>
+				<plugins>
+						<plugin>
+								<groupId>io.fabric8</groupId>
+								<artifactId>fabric8-maven-plugin</artifactId>
+								<version>1.2.0.redhat-621084</version>
+						</plugin>
+				</plugins>
+		</build>
+
+
+</project>

@@ -197,6 +197,7 @@
 								<module>mybatis-extender</module>
 								<module>mybatis-itests-mappers</module>
 								<module>mybatis-osgi-features</module>
+								<module>samples</module>
 						</modules>
 						<build>
 								<defaultGoal>clean install</defaultGoal>

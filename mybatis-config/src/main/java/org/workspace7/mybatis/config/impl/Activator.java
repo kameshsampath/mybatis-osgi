@@ -85,7 +85,7 @@ public class Activator implements BundleActivator {
     }
 
 
-    private class MyBatisEnvConfigCustomizer implements ServiceTrackerCustomizer<DataSource, MyBatisEnvAndConfigRegistration> {
+    private class MyBatisEnvConfigCustomizer implements ServiceTrackerCustomizer<DataSource, MyBatisEnvRegistration> {
 
         private BundleContext bundleContext;
 
@@ -94,25 +94,25 @@ public class Activator implements BundleActivator {
         }
 
         @Override
-        public MyBatisEnvAndConfigRegistration addingService(ServiceReference<DataSource> serviceReference) {
+        public MyBatisEnvRegistration addingService(ServiceReference<DataSource> serviceReference) {
             logger.info("Adding MyBatis Env and Config for datasource {}",
                     serviceReference.getProperty("dataSourceName"));
-            return new MyBatisEnvAndConfigRegistration(bundleContext, transactionFactory, serviceReference);
+            return new MyBatisEnvRegistration(bundleContext, transactionFactory, serviceReference);
         }
 
         @Override
         public void modifiedService(ServiceReference<DataSource> serviceReference,
-                                    MyBatisEnvAndConfigRegistration myBatisEnvAndConfigRegistration) {
-            removedService(serviceReference, myBatisEnvAndConfigRegistration);
+                                    MyBatisEnvRegistration myBatisEnvRegistration) {
+            removedService(serviceReference, myBatisEnvRegistration);
             addingService(serviceReference);
         }
 
         @Override
         public void removedService(ServiceReference<DataSource> serviceReference,
-                                   MyBatisEnvAndConfigRegistration myBatisEnvAndConfigRegistration) {
+                                   MyBatisEnvRegistration myBatisEnvRegistration) {
             logger.info("Removing MyBatis Env and Config for datasource {}",
                     serviceReference.getProperty("dataSourceName"));
-            myBatisEnvAndConfigRegistration.close();
+            myBatisEnvRegistration.close();
 
         }
     }
